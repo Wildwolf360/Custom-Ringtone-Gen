@@ -1,0 +1,118 @@
+:root {
+  --bg: #0f1020;
+  --card: #1a1c33;
+  --border: #2c2f52;
+  --text: #e8e9f5;
+  --muted: #9a9cc0;
+  --accent: #7c5cff;
+  --accent2: #22d3a6;
+  --voice: #ffb347;
+  --music: #4fa3ff;
+  --error: #ff6b6b;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(circle at top, #1d1f45, var(--bg) 60%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header { text-align: center; padding: 32px 16px 8px; }
+header h1 { margin: 0; font-size: 2.2rem; }
+header p { color: var(--muted); margin: 6px 0 0; }
+
+main { max-width: 820px; margin: 0 auto; padding: 16px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+h2 { margin: 0 0 14px; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; }
+h2 small { color: var(--muted); font-weight: normal; }
+.step {
+  display: inline-grid; place-items: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); font-size: .85rem;
+}
+
+label { display: flex; flex-direction: column; gap: 6px; font-size: .88rem; color: var(--muted); }
+label output { color: var(--text); font-weight: 600; }
+label.check { flex-direction: row; align-items: center; color: var(--text); }
+.grow { flex: 1; min-width: 180px; }
+
+.row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin: 12px 0; }
+
+textarea, input[type=text], input[type=number], select {
+  background: #11132a;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  font: inherit;
+}
+textarea { width: 100%; resize: vertical; font-size: 1rem; }
+input[type=number] { width: 110px; }
+select { min-width: 150px; }
+input[type=range] { accent-color: var(--accent); width: 100%; }
+
+button {
+  font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid transparent;
+  padding: 9px 16px; color: var(--text);
+}
+button:disabled { opacity: .5; cursor: progress; }
+.primary { background: var(--accent); font-weight: 600; }
+.primary:hover:not(:disabled) { filter: brightness(1.15); }
+.secondary { background: transparent; border-color: var(--border); }
+.secondary:hover:not(:disabled) { border-color: var(--accent); }
+.link { background: none; color: var(--error); padding: 4px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chips button {
+  background: #23264a; border: 1px solid var(--border); border-radius: 20px;
+  padding: 5px 12px; font-size: .82rem;
+}
+.chips button:hover { border-color: var(--accent2); }
+
+.drop {
+  border: 2px dashed var(--border); border-radius: 12px; padding: 18px;
+  text-align: center; color: var(--muted); transition: border-color .2s, background .2s;
+  cursor: pointer;
+}
+.drop.over { border-color: var(--accent2); background: #1f2a3a; }
+.drop.loaded { border-style: solid; border-color: var(--music); color: var(--text); }
+.drop a { color: var(--accent2); }
+.drop p { margin: 0; }
+
+#musicOptions { margin-top: 16px; transition: opacity .2s; }
+#musicOptions.disabled { opacity: .4; pointer-events: none; }
+
+.placement { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 8px 0 4px; }
+.placement label { flex-direction: row; cursor: pointer; }
+.placement input { display: none; }
+.placement span {
+  flex: 1; display: flex; flex-direction: column; gap: 2px;
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; color: var(--text);
+}
+.placement small { color: var(--muted); }
+.placement input:checked + span { border-color: var(--accent); background: #2a2556; }
+
+.status { margin-left: 10px; font-size: .9rem; color: var(--muted); }
+.status.error { color: var(--error); }
+.status.ok { color: var(--accent2); }
+
+#result { margin-top: 14px; }
+canvas { width: 100%; height: 110px; background: #11132a; border-radius: 10px; display: block; }
+audio { width: 100%; margin-top: 12px; }
+.legend { display: flex; gap: 16px; font-size: .8rem; color: var(--muted); margin-top: 6px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+.lv::before { background: var(--voice); }
+.lm::before { background: var(--music); }

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ringtone Studio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔔</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🔔 Ringtone Studio</h1>
+    <p>Type a message, pick a voice, add music, and download your custom ringtone.</p>
+  </header>
+
+  <main>
+    <!-- 1. MESSAGE -->
+    <section class="card">
+      <h2><span class="step">1</span> Your message</h2>
+      <textarea id="text" rows="3" maxlength="1000" placeholder="e.g. Hey boss, your phone is ringing! Pick it up!"></textarea>
+      <div class="chips" id="chips">
+        <button data-text="Hey! Your phone is ringing. Pick it up, pick it up!">Pick it up</button>
+        <button data-text="Incoming call! Incoming call! Somebody wants to talk to you.">Incoming call</button>
+        <button data-text="Boss, it's mom calling. Answer right now!">Mom calling</button>
+        <button data-text="Attention please. This is your phone. Kindly answer the call.">Formal</button>
+        <button data-text="Wake up! Wake up! It's time to rise and shine!">Alarm</button>
+      </div>
+      <div class="row">
+        <label>Repeat message
+          <input type="number" id="repeat" min="1" max="10" value="2" />
+        </label>
+        <label>Pause between repeats (s)
+          <input type="number" id="gap" min="0" max="10" step="0.1" value="1" />
+        </label>
+      </div>
+    </section>
+
+    <!-- 2. VOICE -->
+    <section class="card">
+      <h2><span class="step">2</span> Voice</h2>
+      <div class="row">
+        <label>Language
+          <select id="language"></select>
+        </label>
+        <label>Gender
+          <select id="gender">
+            <option value="">Any</option>
+            <option>Female</option>
+            <option>Male</option>
+          </select>
+        </label>
+        <label class="grow">Voice
+          <select id="voice"></select>
+        </label>
+      </div>
+      <div class="row">
+        <label class="grow">Speed <output id="rateOut">0%</output>
+          <input type="range" id="rate" min="-50" max="100" value="0" />
+        </label>
+        <label class="grow">Pitch <output id="pitchOut">0 Hz</output>
+          <input type="range" id="pitch" min="-50" max="50" value="0" />
+        </label>
+      </div>
+      <button id="previewVoice" class="secondary">▶ Preview voice</button>
+      <span id="voiceStatus" class="status"></span>
+    </section>
+
+    <!-- 3. MUSIC -->
+    <section class="card">
+      <h2><span class="step">3</span> Music <small>(optional)</small></h2>
+      <div class="drop" id="drop">
+        <input type="file" id="musicFile" accept="audio/*" hidden />
+        <p id="musicLabel">Drop an audio file here or <a href="#">browse</a><br /><small>MP3, WAV, OGG, M4A…</small></p>
+        <button id="clearMusic" class="link" hidden>Remove music</button>
+      </div>
+
+      <div id="musicOptions" class="disabled">
+        <label>Where should the music go?</label>
+        <div class="placement" id="placement">
+          <label><input type="radio" name="placement" value="background" checked />
+            <span><b>Background</b><small>Music plays under the voice</small></span></label>
+          <label><input type="radio" name="placement" value="front" />
+            <span><b>Front</b><small>Music first, then voice</small></span></label>
+          <label><input type="radio" name="placement" value="back" />
+            <span><b>Back</b><small>Voice first, then music</small></span></label>
+          <label><input type="radio" name="placement" value="both" />
+            <span><b>Front + Back</b><small>Music, voice, music</small></span></label>
+        </div>
+
+        <div class="row">
+          <label class="grow">Music starts at <output id="musicStartOut">0.0 s</output>
+            <input type="range" id="musicStart" min="0" max="0" step="0.1" value="0" />
+          </label>
+          <label class="grow" id="clipLenWrap">Music clip length <output id="clipLenOut">5 s</output>
+            <input type="range" id="clipLen" min="1" max="30" step="0.5" value="5" />
+          </label>
+        </div>
+        <div class="row" id="bgOnly">
+          <label class="grow">Voice starts after <output id="leadInOut">2.0 s</output>
+            <input type="range" id="leadIn" min="0" max="15" step="0.5" value="2" />
+          </label>
+          <label class="grow">Music after voice <output id="tailOut">2.0 s</output>
+            <input type="range" id="tail" min="0" max="15" step="0.5" value="2" />
+          </label>
+        </div>
+        <div class="row">
+          <label class="grow">Music volume <output id="musicVolOut">70%</output>
+            <input type="range" id="musicVol" min="0" max="150" value="70" />
+          </label>
+          <label class="grow">Voice volume <output id="voiceVolOut">100%</output>
+            <input type="range" id="voiceVol" min="0" max="200" value="100" />
+          </label>
+        </div>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="duck" checked /> Lower music while voice speaks (ducking)</label>
+          <label class="check"><input type="checkbox" id="fades" checked /> Fade music in/out</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CREATE -->
+    <section class="card">
+      <h2><span class="step">4</span> Create</h2>
+      <div class="row">
+        <label>Max length (s)
+          <input type="number" id="maxLen" min="5" max="120" value="30" />
+        </label>
+        <button id="create" class="primary">✨ Create ringtone</button>
+      </div>
+      <span id="status" class="status"></span>
+
+      <div id="result" hidden>
+        <canvas id="wave" height="110"></canvas>
+        <div class="legend"><span class="lv">Voice</span><span class="lm">Music</span></div>
+        <audio id="player" controls></audio>
+        <div class="row">
+          <label class="grow">File name
+            <input type="text" id="fileName" value="my-ringtone" />
+          </label>
+          <button id="dlMp3" class="primary">⬇ Download MP3</button>
+          <button id="dlWav" class="secondary">⬇ Download WAV</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/vendor/lame.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

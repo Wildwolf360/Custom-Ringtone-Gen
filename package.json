@@ -1,0 +1,15 @@
+{
+  "name": "ringtone-studio",
+  "version": "1.0.0",
+  "description": "Create custom ringtones from text with neural voices and music",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.3.0",
+    "lamejs": "^1.2.1",
+    "msedge-tts": "^2.1.0"
+  }
+}
